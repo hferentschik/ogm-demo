@@ -23,8 +23,11 @@
  */
 package org.hibernate.jpa.demo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -45,6 +48,7 @@ public class Event {
 
 	private String title;
 	private Date date;
+	private List<String> log = new ArrayList<String>();
 
 	public Event() {
 		// this form used by Hibernate
@@ -86,6 +90,15 @@ public class Event {
 		this.title = title;
 	}
 
+	@ElementCollection
+	public List<String> getLog() {
+		return log;
+	}
+
+	public void addLogEntry(String logEntry) {
+		this.log.add( logEntry );
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if ( this == o ) {
@@ -125,7 +138,12 @@ public class Event {
 		sb.append( "{id='" ).append( id ).append( '\'' );
 		sb.append( ", title='" ).append( title ).append( '\'' );
 		sb.append( ", date=" ).append( date );
+		sb.append( ", log=" ).append( log );
 		sb.append( '}' );
 		return sb.toString();
+	}
+
+	public void setLog(List<String> log) {
+		this.log = log;
 	}
 }

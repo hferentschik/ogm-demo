@@ -92,10 +92,7 @@ public class InsertAndQueryTest extends TestCase {
 			log.info( event.toString() );
 		}
 
-		Cache<String, Object> cache = cacheContainer.getCache( "ENTITIES" );
-		for ( Map.Entry entry : cache.entrySet() ) {
-			log.info( entry.getKey().toString() + "" + entry.getValue().toString() );
-		}
+		checkInfinispanCache();
 
 		fullTextEntityManager.getTransaction().commit();
 		fullTextEntityManager.clear();
@@ -112,11 +109,24 @@ public class InsertAndQueryTest extends TestCase {
 		return fulltextQuery;
 	}
 
+	private void checkInfinispanCache() {
+		Cache<String, Object> cache = cacheContainer.getCache( "ENTITIES" );
+		for ( Map.Entry entry : cache.entrySet() ) {
+			log.info( entry.getKey().toString() + "" + entry.getValue().toString() );
+		}
+
+		cache = cacheContainer.getCache( "ASSOCIATIONS" );
+		for ( Map.Entry entry : cache.entrySet() ) {
+			log.info( entry.getKey().toString() + "" + entry.getValue().toString() );
+		}
+	}
+
 	private void createTestData() {
 		// create a couple of events...
 		fullTextEntityManager.getTransaction().begin();
 		for ( int i = 0; i < 10; i++ ) {
 			Event event = new Event( "Event " + i, new Date() );
+			event.addLogEntry( "Initial Creation of event " + i );
 			fullTextEntityManager.persist( event );
 		}
 		fullTextEntityManager.getTransaction().commit();
@@ -168,5 +178,4 @@ public class InsertAndQueryTest extends TestCase {
 		}
 		return null; //actually this line is unreachable
 	}
-
 }
