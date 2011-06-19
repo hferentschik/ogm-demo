@@ -41,7 +41,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Indexed;
 
 @Entity
-@Table(name = "EVENTS")
 @Indexed
 public class Event {
 	@Id
@@ -53,7 +52,6 @@ public class Event {
 	private String title;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "EVENT_DATE")
 	private Date date;
 
 	@ElementCollection
