@@ -44,10 +44,19 @@ import org.hibernate.search.annotations.Indexed;
 @Table(name = "EVENTS")
 @Indexed
 public class Event {
+	@Id
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 
+	@Field
 	private String title;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "EVENT_DATE")
 	private Date date;
+
+	@ElementCollection
 	private List<String> log = new ArrayList<String>();
 
 	public Event() {
@@ -60,9 +69,7 @@ public class Event {
 		this.date = date;
 	}
 
-	@Id
-	@GeneratedValue(generator = "uuid")
-	@GenericGenerator(name = "uuid", strategy = "uuid2")
+
 	public String getId() {
 		return id;
 	}
@@ -71,8 +78,6 @@ public class Event {
 		this.id = id;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "EVENT_DATE")
 	public Date getDate() {
 		return date;
 	}
@@ -81,7 +86,6 @@ public class Event {
 		this.date = date;
 	}
 
-	@Field
 	public String getTitle() {
 		return title;
 	}
@@ -90,7 +94,6 @@ public class Event {
 		this.title = title;
 	}
 
-	@ElementCollection
 	public List<String> getLog() {
 		return log;
 	}
