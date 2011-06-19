@@ -64,14 +64,9 @@ public class InsertAndQueryTest extends TestCase {
 		createTestData();
 
 		fullTextEntityManager.getTransaction().begin();
+
 		FullTextQuery fullTextQuery = createMatchAllFulltextQuery();
 		assertTrue( fullTextQuery.getResultSize() == 10 );
-
-		@SuppressWarnings("unchecked")
-		List<Event> result = fullTextQuery.getResultList();
-		for ( Event event : result ) {
-			log.info( event.toString() );
-		}
 
 		fullTextEntityManager.getTransaction().commit();
 		fullTextEntityManager.clear();
