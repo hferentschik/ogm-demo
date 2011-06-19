@@ -60,6 +60,25 @@ public class InsertAndQueryTest extends TestCase {
 	private FullTextEntityManager fullTextEntityManager;
 	private CacheContainer cacheContainer;
 
+	public void testInsertQueryDelete() {
+		createTestData();
+
+		fullTextEntityManager.getTransaction().begin();
+		FullTextQuery fullTextQuery = createMatchAllFulltextQuery();
+		assertTrue( fullTextQuery.getResultSize() == 10 );
+
+		@SuppressWarnings("unchecked")
+		List<Event> result = fullTextQuery.getResultList();
+		for ( Event event : result ) {
+			log.info( event.toString() );
+		}
+
+		fullTextEntityManager.getTransaction().commit();
+		fullTextEntityManager.clear();
+
+		deleteTestData();
+	}
+
 	@Override
 	protected void setUp() throws Exception {
 		cacheContainer = createCustomCacheManager( "infinispan-config.xml", new Properties() );
@@ -70,32 +89,11 @@ public class InsertAndQueryTest extends TestCase {
 		transactionManager.begin();
 		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory( "ogm-demo" );
 		fullTextEntityManager = Search.getFullTextEntityManager( entityManagerFactory.createEntityManager() );
-		createTestData();
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		deleteTestData();
 		fullTextEntityManager.close();
-	}
-
-	public void testHibernateSearchQuery() {
-		fullTextEntityManager.getTransaction().begin();
-
-		FullTextQuery fullTextQuery = createMatchAllFulltextQuery();
-
-		assertTrue( fullTextQuery.getResultSize() == 10 );
-
-		@SuppressWarnings("unchecked")
-		List<Event> result = fullTextQuery.getResultList();
-		for ( Event event : result ) {
-			log.info( event.toString() );
-		}
-
-		checkInfinispanCache();
-
-		fullTextEntityManager.getTransaction().commit();
-		fullTextEntityManager.clear();
 	}
 
 	private FullTextQuery createMatchAllFulltextQuery() {
