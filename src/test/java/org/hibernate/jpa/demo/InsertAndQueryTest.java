@@ -119,7 +119,7 @@ public class InsertAndQueryTest extends TestCase {
 		fullTextEntityManager.getTransaction().begin();
 		for ( int i = 0; i < 10; i++ ) {
 			Event event = new Event( "Event " + i, new Date() );
-			event.addLogEntry( "Initial Creation of event " + i );
+			event.addRemark( "Initial Creation of event " + i );
 			fullTextEntityManager.persist( event );
 		}
 		fullTextEntityManager.getTransaction().commit();

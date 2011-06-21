@@ -26,16 +26,12 @@ package org.hibernate.jpa.demo;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.apache.solr.client.solrj.beans.Field;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Indexed;
@@ -48,14 +44,13 @@ public class Event {
 	@GenericGenerator(name = "uuid", strategy = "uuid2")
 	private String id;
 
-	@Field
 	private String title;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	@ElementCollection
-	private List<String> log = new ArrayList<String>();
+	private List<String> remarks = new ArrayList<String>();
 
 	public Event() {
 		// this form used by Hibernate
@@ -92,12 +87,12 @@ public class Event {
 		this.title = title;
 	}
 
-	public List<String> getLog() {
-		return log;
+	public List<String> getRemarks() {
+		return remarks;
 	}
 
-	public void addLogEntry(String logEntry) {
-		this.log.add( logEntry );
+	public void addRemark(String remark) {
+		this.remarks.add( remark );
 	}
 
 	@Override
@@ -139,12 +134,12 @@ public class Event {
 		sb.append( "{id='" ).append( id ).append( '\'' );
 		sb.append( ", title='" ).append( title ).append( '\'' );
 		sb.append( ", date=" ).append( date );
-		sb.append( ", log=" ).append( log );
+		sb.append( ", log=" ).append( remarks );
 		sb.append( '}' );
 		return sb.toString();
 	}
 
-	public void setLog(List<String> log) {
-		this.log = log;
+	public void setRemarks(List<String> remarks) {
+		this.remarks = remarks;
 	}
 }
